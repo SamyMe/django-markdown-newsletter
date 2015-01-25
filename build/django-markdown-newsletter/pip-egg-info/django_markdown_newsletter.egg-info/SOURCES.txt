@@ -1,0 +1,12 @@
+setup.cfg
+django-markdown-newsletter/__init__.py
+django-markdown-newsletter/admin.py
+django-markdown-newsletter/forms.py
+django-markdown-newsletter/models.py
+django-markdown-newsletter/sendmail.py
+django-markdown-newsletter/tests.py
+django-markdown-newsletter/views.py
+pip-egg-info/django_markdown_newsletter.egg-info/PKG-INFO
+pip-egg-info/django_markdown_newsletter.egg-info/SOURCES.txt
+pip-egg-info/django_markdown_newsletter.egg-info/dependency_links.txt
+pip-egg-info/django_markdown_newsletter.egg-info/top_level.txt
