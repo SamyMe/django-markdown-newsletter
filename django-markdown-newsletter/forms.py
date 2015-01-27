@@ -12,6 +12,10 @@ class SubscribeForm(forms.ModelForm):
 
 class NewsletterForm(forms.ModelForm):
         body = forms.CharField(widget=PagedownWidget())
+	newsletter=forms.ChoiceField(widget=forms.Select(), 
+        choices = ([(x["newsletter"],x["newsletter"]) for x in Subscribe.objects.values('newsletter').distinct()]) , initial='default')
 	class Meta:
 		model = Newsletter
 		exclude=[]
+
+	        

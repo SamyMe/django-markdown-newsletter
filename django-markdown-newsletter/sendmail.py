@@ -6,6 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 from email.mime.base import MIMEBase
+from django.conf import settings
 
 
 def sendmail(destination,subject="Subject 0",html="",f=None):
@@ -18,9 +19,9 @@ def sendmail(destination,subject="Subject 0",html="",f=None):
 	smtp.set_debuglevel(False)
 	smtp.ehlo()
 	smtp.starttls()
-	smtp.login("EMAIL@gmail.com", "PASSWORD")
+	smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
 
-	sender="EMAIL@gmail.com"
+	sender=settings.EMAIL_USER
 
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart()
@@ -31,11 +32,12 @@ def sendmail(destination,subject="Subject 0",html="",f=None):
 	# Create the body of the message (a plain-text and an HTML version).
 	text = "" # I don't know what this might be for (???)
 
-	part = MIMEBase('application', 'octet-stream')
-	part.set_payload(open(f, 'rb').read())
-	encoders.encode_base64(part)
-	part.add_header('Content-Disposition','attachment; filename="%s"' % basename(f))
-	msg.attach(part)
+	if f :
+		part = MIMEBase('application', 'octet-stream')
+		part.set_payload(open(f, 'rb').read())
+		encoders.encode_base64(part)
+		part.add_header('Content-Disposition','attachment; filename="%s"' % basename(f))
+		msg.attach(part)
 
 
 	# Record the MIME types of both parts - text/plain and text/html.

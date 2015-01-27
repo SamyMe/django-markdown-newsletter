@@ -3,7 +3,6 @@ from .models import Subscribe
 from .forms import NewsletterForm
 import sendmail
 from markdown import markdown
-from websiteOMC.settings import BASE_DIR
 
 def newsletter(request):
 	if request.user.is_authenticated():
@@ -12,7 +11,7 @@ def newsletter(request):
 		a=[]
 		for i in destination:
 			a.append(str(i))
-		context={'form':form}	
+		context={'form':form, newsletters:}	
 
 		if form.is_valid():
 			email=form.save(commit=False)
@@ -27,4 +26,33 @@ def newsletter(request):
 		return HttpResponseRedirect('/')
 	
 
+
+def subscribe_default(request):
+	form = SubscribeForm(request.POST or None )
+
+	if form.is_valid():
+		if 'subscribe' in form.POST:
+			new_subscribe=form.save(commit=False)
+			ip=get_ip(request)
+			new_subscribe.save()
+			context={subscribe:"True" }
+		if 'unsubscribe' in form.POST:
+			context={unsubscribe:"True" }
+
+	return render(request, "subscribed.html", context)
+
+
+def subscribe_specific(request):
+	form = SubscribeForm(request.POST or None )
+
+	if form.is_valid():
+		if 'subscribe' in form.POST:
+			new_subscribe=form.save(commit=False)
+			ip=get_ip(request)
+			new_subscribe.save()
+			context={subscribe:"True" }
+		if 'unsubscribe' in form.POST:
+			context={unsubscribe:"True" }
+
+	return render(request, "subscribed.html", context)
 
