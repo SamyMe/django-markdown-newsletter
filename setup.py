@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'django-markdown-newsletter',
   packages = ['django_markdown_newsletter'], # this must be the same as the name above
-  version = '0.5',
+  version = '0.6',
   description = 'Easy to use Django markdown newslette',
   author = 'Samy Melaine',
   author_email = 'melaine.samy@gmail.com',
