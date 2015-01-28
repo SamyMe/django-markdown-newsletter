@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static  %}
+
+{% block content %}
+{{form.media}}
+<div id="add"  align=center>
+	<form action="/newsletter/" method="POST" enctype="multipart/form-data" > {% csrf_token %}
+<h2> Envoyer une newsletter : </h2>
+	<table class="addForm">
+			
+			{% if form.errors %}
+			ALL FIELDS ARE REQUIRED !
+			{% endif %}
+			<tr>
+			<td><label for="title">Objet : </label></td>
+			<td>{{form.subject}}</td>
+			</tr>
+
+			<td><label for="title">Newsletter : </label></td>
+			<td>{{form.newsletter}}</td>
+			</tr>
+
+			<tr>
+			<td><label for="title">Joindre un fichier : </label></td>
+ 			<td>{{form.attachement}}</td>
+			</tr>
+
+			</table>
+
+			<tr><td>{{form.body}}</td><tr>
+
+			<input type='submit' name="envoyer" value='Envoyer' />
+	</form>
+</div>
+
+
+
+
+
+{% endblock %}
