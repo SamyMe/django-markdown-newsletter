@@ -48,32 +48,34 @@ def subscribe_specific(request):
 	return render(request, "subscribed.html", context)
 
 def subscribe_default(request):
-        form = SubscribeForm(request.POST or None )
-        context={ "subscribe" : True }
-        if 'subscribe' in request.POST:
-	        if form.is_valid():
-                        new_subscribe=form.save(commit=False)
-                        ip=get_ip(request)
-                        new_subscribe.save()
-                        context={ "subscribe" : value, }
-		else:
+	try:
+		form = SubscribeForm(request.POST or None )
+		context={ "subscribe" : True }
+		if 'subscribe' in request.POST:
+			if form.is_valid():
+				new_subscribe=form.save(commit=False)
+				ip=get_ip(request)
+				new_subscribe.save()
+				context={ "subscribe" : True }
+			else:
+				subscriber=Subscribe.objects.filter(email=request.POST.get("email"))[0]
+				if subscriber:
+					subscriber.newsletter="default"
+					subscriber.save()
+					context={"subscribe": True}
+				
+
+
+		elif 'unsubscribe' in request.POST:
 			subscriber=Subscribe.objects.filter(email=request.POST.get("email"))[0]
-			if subscriber:
-				subscriber.newsletter="default"
-				subscriber.save()
-				context={"subscribe": True}
-			
+			print subscriber
+			subscriber.newsletter="deleted"
+			subscriber.save()
+			context={ "unsubscribe" : True }
 
-
-        elif 'unsubscribe' in request.POST:
-		subscriber=Subscribe.objects.filter(email=request.POST.get("email"))[0]
-		print subscriber
-                subscriber.newsletter="deleted"
-                subscriber.save()
-                context={ "unsubscribe" : True }
-
-	return render(request, "subscribed.html", context)
-
+		return render(request, "subscribed.html", context)
+	except:
+		return HttpResponseRedirect('/')
 
 def get_ip(request):
         try:
